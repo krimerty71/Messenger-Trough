@@ -1,1 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{
+font-family:Arial;
+margin:0;
+display:flex;
+flex-direction:column;
+height:100vh;
+}
+#chat{
+flex:1;
+overflow:auto;
+padding:10px;
+}
+.msg{
+background:#eee;
+padding:8px;
+margin:5px;
+border-radius:8px;
+}
+.bottom{
+display:flex;
+padding:10px;
+}
+input{
+flex:1;
+padding:10px;
+}
+button{
+padding:10px;
+}
+</style>
+</head>
 
+<body>
+
+<div id="chat"></div>
+
+<div class="bottom">
+<input id="text" placeholder="Сообщение">
+<button onclick="send()">Send</button>
+</div>
+
+<script>
+
+const name = prompt("Имя:");
+
+const ws = new WebSocket(
+location.origin.replace("http","ws")
+);
+
+ws.onmessage = e => {
+ add(e.data);
+};
+
+function add(t){
+ const div=document.createElement("div");
+ div.className="msg";
+ div.textContent=t;
+ chat.appendChild(div);
+}
+
+function send(){
+ const msg=name+": "+text.value;
+ ws.send(msg);
+ text.value="";
+}
+
+</script>
+
+</body>
+</html>
